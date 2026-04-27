@@ -1,0 +1,4 @@
+Họ tên: Lê Minh Hiếu
+Nhóm: 6
+Dự án: Hotel Manegement_Group6.
+Nội dung: File tài liệu được commit bởi thành viên cho bài thực hành SCM.
