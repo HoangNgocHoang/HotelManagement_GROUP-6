@@ -363,7 +363,7 @@ public class HotelManagementUI extends JFrame {
         return null;
     }
 
-    // Build and show update dialog for a found room (edit fields)
+    // Xây dựng and hiển thị update dialog for a found room (edit fields)
     private boolean showUpdateDialog(Room room) {
         if (room == null) {
             return false;
