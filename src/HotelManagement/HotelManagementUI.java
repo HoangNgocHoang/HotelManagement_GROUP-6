@@ -10,22 +10,24 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 import java.awt.Component;
 
+/**
+ * HotelManagementUI Class: Handles the main graphical user interface.
+ * Features a login system and a professional management dashboard.
+ */
 public class HotelManagementUI extends JFrame {
-
+	// --- Layout and Navigation ---
     private CardLayout cardLayout;
     private JPanel mainPanel;
     
-    // Khai báo cho Log Console
+ // --- UI Components ---
     private JTextArea outputArea; 
-    
-    // Khai báo cho Bảng Dữ liệu
     private JTable roomTable;
     private DefaultTableModel tableModel;
-
+ // --- Logic and Data ---
     private RoomList roomList = new RoomList(); 
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-    // --- KHAI BÁO CÁC HẰNG SỐ MÀU Ở CẤP ĐỘ LỚP ---
+ // --- UI COLOR CONSTANTS (For a consistent premium theme) ---
     private final Color HEADER_BG = new Color(41, 128, 185); 
     private final Color SIDEBAR_BG = new Color(44, 62, 80);  
     private final Color DEFAULT_COLOR = new Color(52, 152, 219); 
@@ -37,7 +39,9 @@ public class HotelManagementUI extends JFrame {
     private final Color GROUP_TITLE_COLOR = new Color(155, 165, 175); 
     // ------------------------------------------------------------------------------------
 
-
+    /**
+     * Constructor: Initializes the frame settings and card layout.
+     */
     public HotelManagementUI() {
         setTitle("🏨 Hotel Management System - Premium UI");
         setSize(1100, 700);
@@ -46,7 +50,7 @@ public class HotelManagementUI extends JFrame {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-
+     // Initialize the two main panels
         JPanel loginPanel = createLoginPanel();
         JPanel dashboardPanel = createDashboardPanel();
 
@@ -56,9 +60,11 @@ public class HotelManagementUI extends JFrame {
         add(mainPanel);
         cardLayout.show(mainPanel, "Login");
     }
-
+    /**
+     * Creates the Login screen with background image and credentials fields.
+     */
     private JPanel createLoginPanel() {
-        // Lưu ý: Class BackgroundPanel và file hotel.jpg phải có sẵn trong dự án của bạn
+    	// Custom background panel (Requires hotel.jpg in the package path)
         BackgroundPanel panel = new BackgroundPanel("/HotelManagement/hotel.jpg"); 
 
         panel.setLayout(new GridBagLayout());
@@ -72,20 +78,19 @@ public class HotelManagementUI extends JFrame {
         JTextField txtUser = new JTextField(15);
         JPasswordField txtPass = new JPasswordField(15);
         
-        // Nâng cấp nút Login
         JButton btnLogin = new JButton("🔑 Login");
         btnLogin.setFont(new Font("SansSerif", Font.BOLD, 18));
         btnLogin.setBackground(new Color(46, 204, 113)); 
         btnLogin.setForeground(Color.WHITE);
         btnLogin.setFocusPainted(false);
-
+     // Add components to the grid
         gbc.gridx = 0; gbc.gridy = 0; panel.add(title, gbc);
         gbc.gridy++; JLabel lblUser = new JLabel("👤 Username:"); lblUser.setForeground(Color.WHITE); panel.add(lblUser, gbc);
         gbc.gridy++; panel.add(txtUser, gbc);
         gbc.gridy++; JLabel lblPass = new JLabel("🔒 Password:"); lblPass.setForeground(Color.WHITE); panel.add(lblPass, gbc);
         gbc.gridy++; panel.add(txtPass, gbc);
         gbc.gridy++; panel.add(btnLogin, gbc);
-
+     // Login validation logic
         btnLogin.addActionListener(e -> {
             String user = txtUser.getText().trim();
             String pass = new String(txtPass.getPassword());
@@ -101,11 +106,13 @@ public class HotelManagementUI extends JFrame {
 
         return panel;
     }
-
+    /**
+     * Creates the main Dashboard UI post-authentication.
+     */
     private JPanel createDashboardPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // --- 1. Header Đẳng cấp ---
+     // --- 1. Header (Top Title Bar) ---
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(HEADER_BG);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
@@ -115,13 +122,13 @@ public class HotelManagementUI extends JFrame {
         header.setForeground(Color.WHITE);
         headerPanel.add(header);
 
-        // --- 2. Sidebar Menu (Dùng BoxLayout để phân cấp VÀ CĂNG ĐỀU) ---
+     // --- 2. Sidebar (Left Navigation Menu) ---
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS)); 
         sidebar.setBackground(SIDEBAR_BG);
         sidebar.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         sidebar.setAlignmentX(Component.LEFT_ALIGNMENT); // Căn trái
-
+     // List of menu button names
         String[] btnNames = {
             "➕ Add Room", "✏️ Update Room", "🗑 Delete Room",
             "---DIVIDER---",  
@@ -132,7 +139,7 @@ public class HotelManagementUI extends JFrame {
         // Bắt đầu tạo nhóm "QUẢN LÝ PHÒNG"
         sidebar.add(createGroupTitle("QUẢN LÝ PHÒNG"));
         sidebar.add(Box.createVerticalStrut(5)); 
-
+     // Dynamically create buttons for the sidebar
         for (String name : btnNames) {
             if (name.equals("---DIVIDER---")) {
                 sidebar.add(Box.createVerticalStrut(15));
@@ -285,7 +292,9 @@ public class HotelManagementUI extends JFrame {
         return spinner;
     }
 
-    // Build and show add-room dialog (VIP or Normal)
+    /**
+     * Builds and displays a dialog for adding a new VIP or Normal room.
+     */
     private Room showAddRoomDialog(boolean vip) {
         JPanel panel = new JPanel(new GridBagLayout());
         
@@ -305,7 +314,7 @@ public class HotelManagementUI extends JFrame {
         JTextField baseCostField = new JTextField(10);
         JSpinner checkinSpinner = createDateSpinner(new Date());
         JSpinner checkoutSpinner = createDateSpinner(new Date(System.currentTimeMillis() + 24L * 60 * 60 * 1000)); // +1 day
-
+     // Layout Input fields
         gbc.gridx = 0; gbc.gridy = 0; panel.add(new JLabel("Room ID:"), gbc);
         gbc.gridx = 1; panel.add(idField, gbc);
         gbc.gridx = 0; gbc.gridy++; panel.add(new JLabel("Customer Name:"), gbc);
@@ -589,7 +598,7 @@ public class HotelManagementUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Sử dụng Nimbus Look and Feel để có giao diện hiện đại hơn
+    	// Apply Nimbus Look and Feel for a modern Swing appearance
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
