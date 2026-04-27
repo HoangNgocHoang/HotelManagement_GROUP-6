@@ -1,0 +1,4 @@
+Họ tên: Ngô Văn Danh
+Nhóm: 6
+Dự án: HotelManagement_GROUP-6
+Nội dung: File tài liệu được commit bởi thành viên cho bài thực hành SCM.
